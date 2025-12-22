@@ -38,14 +38,18 @@ public class OrganizerCLI {
       return;
     }
 
+    Path path = Paths.get(dir);
+    // validates path
     try {
-      // validates path
-      Path path = Paths.get(dir);
       PathValidator.validate(path);
 
     } catch (IllegalArgumentException exp) {
-      System.out.println("Arguments is/are wrong");
+      System.out.println("❌ Arguments is/are wrong");
+      System.out.println(exp.getMessage());
+      return; // return here only 
     }
+
+    System.out.println("Starting organizer...");
 
     System.out.println("✔ Directory: " + dir);
     System.out.println("✔ Mode: " + mode);

@@ -15,3 +15,19 @@ validate arguments
 add PathValidator 
 enum OrganizerMode - extension, size
 Wire the pipeline
+
+Phase 2 : 
+Empty directories - Just report - FileScanner / OrganizerService
+
+
+Layer	            Handles
+CLI       	     Bad arguments
+PathValidator	   Invalid root path
+Scanner	          Per-file access issues
+Mover           	Collisions & permissions
+
+EDGE CASE:-
+⚠️ Edge Case 1: Relative paths - taken care by java.nio.file.Path
+⚠️ Edge Case 2: Symbolic links
+⚠️ Edge Case 3: Permission changes mid-run
+⚠️ Edge Case 4: Windows vs Linux paths - taken care by java.nio.file.Path
