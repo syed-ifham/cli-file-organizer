@@ -10,14 +10,15 @@ FileScanner → Classifier → FileMover
 
 PHASE 1 : Path Input  → Validation
 
+Argument count check
+Path validation
+Enum-based mode validation
 add printUsage() - make private
 validate arguments
 add PathValidator 
 enum OrganizerMode - extension, size
-Wire the pipeline
 
-Phase 2 : 
-Empty directories - Just report - FileScanner / OrganizerService
+Phase 2 : Scanner observes & Organizer acts.
 
 
 Layer	            Handles
@@ -31,3 +32,4 @@ EDGE CASE:-
 ⚠️ Edge Case 2: Symbolic links
 ⚠️ Edge Case 3: Permission changes mid-run
 ⚠️ Edge Case 4: Windows vs Linux paths - taken care by java.nio.file.Path
+Empty directories - Just report - FileScanner / OrganizerService

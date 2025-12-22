@@ -10,7 +10,6 @@ public class OrganizerCLI {
   // stateless helper method
   private static void printUsage() {
     System.out.println("Use command : java OrganizerCLI <directory> --by <mode>");
-
   }
 
   public static void main(String[] args) {
@@ -29,30 +28,40 @@ public class OrganizerCLI {
 
     // CLI inputs
     String dir = args[0];
-    String mode = args[2];
+    OrganizerMode mode = null;
 
-    // validating arguments mode
-    if (!mode.equals(OrganizerMode.extension) && !mode.equals("size")) {
-      System.out.println("Available Mode : extension or size");
+    // validating mode arguments
+    try {
+      mode = OrganizerMode.valueOf(args[2].toUpperCase());
+    } catch (IllegalArgumentException exp) {
+      System.out.println("Available Options : [extension,size]");
       printUsage();
       return;
     }
 
     Path path = Paths.get(dir);
-    // validates path
+
+    // validating path
     try {
       PathValidator.validate(path);
 
     } catch (IllegalArgumentException exp) {
-      System.out.println("❌ Arguments is/are wrong");
       System.out.println(exp.getMessage());
-      return; // return here only 
+      return; // return here only
     }
 
     System.out.println("Starting organizer...");
+    System.out.println("Directory: " + dir);
+    System.out.println("Mode: " + mode);
 
-    System.out.println("✔ Directory: " + dir);
-    System.out.println("✔ Mode: " + mode);
+    switch (mode) {
+      case EXTENSION:
+        break;
+      case SIZE:
+        break;
+      default:
+        break;
+    }
 
   }
 
