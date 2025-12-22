@@ -36,18 +36,6 @@ Java Collections
 Exception Handling
 Git & GitHub
 
-📦 Project Structure
-cli-file-organizer/
-├── src/
-│   └── main/java/
-│       └── com/yourname/organizer/
-│           ├── cli/        # CLI entry point
-│           ├── core/       # Scanning & moving logic
-│           ├── classify/   # File classification strategies
-│           └── util/       # Validation utilities
-├── .gitignore
-└── README.md
-
 ▶️ How to Use
 
 1️⃣ Compile the Project
