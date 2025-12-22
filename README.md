@@ -39,14 +39,14 @@ Git & GitHub
 ▶️ How to Use
 
 1️⃣ Compile the Project
-javac -d out src/main/java/com/yourname/organizer/cli/OrganizerCLI.java
+javac -d out organizer/cli/OrganizerCLI.java
 
 2️⃣ Run the Tool
-java -cp out com.yourname.organizer.cli.OrganizerCLI <directory> --by extension
+java -cp out organizer.cli.OrganizerCLI <directory> --by extension
 
 or
 
-java -cp out com.yourname.organizer.cli.OrganizerCLI <directory> --by size
+java -cp out organizer.cli.OrganizerCLI <directory> --by size
 
 📊 Example Output
 Scanning directory: /Downloads
