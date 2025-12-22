@@ -1,0 +1,17 @@
+DOUBTS?
+-- Cli argument is best choice because easy to automate(scriptable) and just one command. --
+
+workflow :-
+OrganizerCLI
+   ↓
+FileOrganizerService
+   ↓
+FileScanner → Classifier → FileMover
+
+PHASE 1 : Path Input  → Validation
+
+add printUsage() - make private
+validate arguments
+add PathValidator 
+enum OrganizerMode - extension, size
+Wire the pipeline
