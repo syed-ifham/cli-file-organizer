@@ -18,14 +18,27 @@ validate arguments
 add PathValidator 
 enum OrganizerMode - extension, size
 
-Phase 2 : Scanner observes & Organizer acts.
+Phase 2 : Scanner observes {
+🧨 Edge Case 1: Permission denied inside subfolders
+               Files.walk() throws AccessDeniedException - stop entier scan(bad❌) or skip✅
+🧨 Edge Case 2: Symlinks
+🧨 Edge Case 3: Huge directories
+
+scan(Path root)
+Uses Files.walk
+Filters regular files
+Returns List<Path>
+}
+
+
+Phase 3 : Organizer acts
 
 
 Layer	            Handles
-CLI       	     Bad arguments
-PathValidator	   Invalid root path
+CLI       	       Bad arguments
+PathValidator	    Invalid root path
 Scanner	          Per-file access issues
-Mover           	Collisions & permissions
+Mover           	 Collisions & permissions
 
 EDGE CASE:-
 ⚠️ Edge Case 1: Relative paths - taken care by java.nio.file.Path
