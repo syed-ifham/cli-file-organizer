@@ -79,10 +79,10 @@ public class OrganizerCLI {
 
     switch (mode) {
       case EXTENSION:
+
         break;
       case SIZE:
-        break;
-      default:
+
         break;
     }
 

@@ -31,14 +31,22 @@ Returns List<Path>
 }
 
 
-Phase 3 : Organizer acts
+Phase 3 : Organizer acts -> service layer owns business decisions
+{
+recognize the filetargetfolder
+Organize by extension
+Organize by size
+organizerfactory provides strategy
+
+}
 
 
-Layer	            Handles
-CLI       	       Bad arguments
-PathValidator	    Invalid root path
-Scanner	          Per-file access issues
-Mover           	 Collisions & permissions
+
+
+
+
+
+
 
 EDGE CASE:-
 ⚠️ Edge Case 1: Relative paths - taken care by java.nio.file.Path
