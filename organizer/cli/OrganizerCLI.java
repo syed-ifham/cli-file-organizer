@@ -8,6 +8,8 @@ import java.util.List;
 import organizer.util.*;
 import organizer.core.*;
 import organizer.scanner.*;
+import organizer.service.OrganizerStrategy;
+import organizer.service.OrganizerStrategyFactory;
 
 public class OrganizerCLI {
 
@@ -24,6 +26,7 @@ public class OrganizerCLI {
       return;
     }
 
+    // validating "--by"
     if (!args[1].equals("--by")) {
       System.out.println("Input Error : Use --by");
       OrganizerCLI.printUsage();
@@ -34,7 +37,7 @@ public class OrganizerCLI {
     String dir = args[0];
     OrganizerMode mode = null;
 
-    // validating mode arguments
+    // validating mode argument
     try {
       mode = OrganizerMode.valueOf(args[2].toUpperCase());
     } catch (IllegalArgumentException exp) {
@@ -64,28 +67,25 @@ public class OrganizerCLI {
     try {
       List<Path> files = FileScanner.scan(path);
       if (files.isEmpty()) {
-
         System.out.println("no files found!");
         System.out.println("is empty : " + files.isEmpty());
         return;
       }
 
-      System.out.println("Files found: " + files.size() );// size in kb
+      System.out.println("Files found: " + files.size());
       // files.forEach(System.out::println); // testing purpose
+
+      OrganizerStrategy strategy = OrganizerStrategyFactory.getStrategy(mode);
+      
+      // testing
+      // for (Path file : files) {
+      // String targetFolder = strategy.resolveTargetFolder(file);
+      // System.out.print(targetFolder);
+      // }
 
     } catch (IOException e) {
       System.err.println("Failed to scan directory");
     }
 
-    switch (mode) {
-      case EXTENSION:
-
-        break;
-      case SIZE:
-
-        break;
-    }
-
   }
-
 }
