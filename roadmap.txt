@@ -40,6 +40,15 @@ organizerfactory provides strategy
 
 }
 
+Phase 4 : Mover -> puts the file into target folder
+{
+provide inputs : 
+   1.Path sourceFile
+   2.Path rootDirectory
+   3.String targetFolder
+
+
+}
 
 
 
