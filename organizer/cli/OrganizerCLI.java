@@ -1,4 +1,3 @@
-//keep this file as short as possible
 package organizer.cli;
 
 import java.io.IOException;
@@ -13,33 +12,19 @@ import organizer.service.*;
 
 public class OrganizerCLI {
 
-  private static void printUsage() {
-    System.out.println("""
-        Usage:
-          java OrganizerCLI <directory> --by <mode>
-
-        Modes:
-          extension   Organize files by file extension
-          size        Organize files by size buckets
-
-        Example:
-          java OrganizerCLI C:\\Downloads --by extension
-        """);
-  }
-
   public static void main(String[] args) {
 
     // validating arguments length
     if (args.length < 3) {
       System.out.println("Requires Minium 3 inputs");
-      OrganizerCLI.printUsage();
+      Helper.printUsage();
       return;
     }
 
     // validating "--by"
     if (!args[1].equals("--by")) {
       System.out.println("Input Error : Use --by");
-      OrganizerCLI.printUsage();
+      Helper.printUsage();
       return;
     }
 
@@ -55,7 +40,7 @@ public class OrganizerCLI {
       mode = OrganizerMode.valueOf(modeInput.toUpperCase());
     } catch (IllegalArgumentException exp) {
       System.err.println("❌ Invalid mode: " + modeInput);
-      printUsage();
+      Helper.printUsage();
       return;
     }
 
@@ -83,16 +68,18 @@ public class OrganizerCLI {
     }
 
     System.out.println("Copying ALL the files SAFELY.");
+
+    // deciding mode
     OrganizerStrategy strategy = OrganizerStrategyFactory.getStrategy(mode);
     int movedCount = 0;
     for (Path file : files) {
 
       try {
-        String folder = strategy.resolveTargetFolder(file);
-        FileMover.move(file, rootDir, folder);
+
+        String folder = strategy.resolveTargetFolder(file); // decides folder Name
+        FileMover.move(file, rootDir, folder); // moves into target folder
         movedCount++;
       } catch (IOException e) {
-        // TODO Auto-generated catch block
         System.err.println("⚠️ Skipped: " + file.getFileName());
       }
 
