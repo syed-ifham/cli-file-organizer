@@ -2,26 +2,36 @@
 package organizer.cli;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
-import organizer.util.*;
 import organizer.core.*;
+import organizer.util.*;
 import organizer.scanner.*;
-import organizer.service.OrganizerStrategy;
-import organizer.service.OrganizerStrategyFactory;
+import organizer.service.*;
 
 public class OrganizerCLI {
 
-  // stateless helper method
   private static void printUsage() {
-    System.out.println("Use command : java OrganizerCLI <directory> --by <mode>");
+    System.out.println("""
+        Usage:
+          java OrganizerCLI <directory> --by <mode>
+
+        Modes:
+          extension   Organize files by file extension
+          size        Organize files by size buckets
+
+        Example:
+          java OrganizerCLI C:\\Downloads --by extension
+        """);
   }
 
   public static void main(String[] args) {
 
     // validating arguments length
-    if (args.length != 3) {
+    if (args.length < 3) {
+      System.out.println("Requires Minium 3 inputs");
       OrganizerCLI.printUsage();
       return;
     }
@@ -34,58 +44,61 @@ public class OrganizerCLI {
     }
 
     // CLI inputs
-    String dir = args[0];
+    String dirInput = args[0];
+    String modeInput = args[2];
+
+    Path rootDir;
     OrganizerMode mode = null;
 
     // validating mode argument
     try {
-      mode = OrganizerMode.valueOf(args[2].toUpperCase());
+      mode = OrganizerMode.valueOf(modeInput.toUpperCase());
     } catch (IllegalArgumentException exp) {
-      System.err.println("Available Options : [extension,size]");
+      System.err.println("❌ Invalid mode: " + modeInput);
       printUsage();
       return;
     }
 
-    Path path = Paths.get(dir);
-
     // validating path
     try {
-      PathValidator.validate(path);
+      rootDir = Paths.get(dirInput);
+      PathValidator.validate(rootDir);
 
-    } catch (IllegalArgumentException exp) {
-      System.err.println(exp.getMessage());
-      return; // return here only
+    } catch (IllegalArgumentException e) {
+      System.err.println("❌ Invalid directory: " + e.getMessage());
+      return;
     }
 
-    System.out.println("Starting organizer...");
-    System.out.println("Directory: " + dir);
-    System.out.println("Mode: " + mode);
-    System.out.println("isReadable: " + Files.isReadable(path));
-    System.out.println("isWritable: " + Files.isWritable(path));
-
-    // scanner filters readable files only
+    // scan files
+    List<Path> files = null;
     try {
-      List<Path> files = FileScanner.scan(path);
-      if (files.isEmpty()) {
-        System.out.println("no files found!");
-        System.out.println("is empty : " + files.isEmpty());
-        return;
+      files = FileScanner.scan(rootDir);
+    } catch (IOException e) {
+      System.err.println("❌ Failed while scanning files: " + e.getMessage());
+    }
+
+    if (files.isEmpty()) {
+      System.out.println("📁 Directory is empty. Nothing to organize.");
+      return;
+    }
+
+    System.out.println("Copying ALL the files SAFELY.");
+    OrganizerStrategy strategy = OrganizerStrategyFactory.getStrategy(mode);
+    int movedCount = 0;
+    for (Path file : files) {
+
+      try {
+        String folder = strategy.resolveTargetFolder(file);
+        FileMover.move(file, rootDir, folder);
+        movedCount++;
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        System.err.println("⚠️ Skipped: " + file.getFileName());
       }
 
-      System.out.println("Files found: " + files.size());
-      // files.forEach(System.out::println); // testing purpose
-
-      OrganizerStrategy strategy = OrganizerStrategyFactory.getStrategy(mode);
-      
-      // testing
-      // for (Path file : files) {
-      // String targetFolder = strategy.resolveTargetFolder(file);
-      // System.out.print(targetFolder);
-      // }
-
-    } catch (IOException e) {
-      System.err.println("Failed to scan directory");
     }
-
+    System.out.println("✅ Organization complete.");
+    System.out.println("📦 Files processed: " + movedCount);
+    System.out.println("📂 Mode used: " + mode);
   }
 }

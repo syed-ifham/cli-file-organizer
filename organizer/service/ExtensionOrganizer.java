@@ -1,17 +1,16 @@
 package organizer.service;
 
 import java.nio.file.Path;
+import java.util.List;
 
 public class ExtensionOrganizer implements OrganizerStrategy {
+
   @Override
   public String resolveTargetFolder(Path file) {
 
     String name = file.getFileName().toString();
     int dot = name.lastIndexOf(".");
-    if (dot == -1) {
-      return "No_EXTENSION";
-    }
+    return (dot == -1) ? "no-extension" : name.substring(dot + 1);
 
-    return name.substring(dot + 1).toUpperCase();
   }
 }
