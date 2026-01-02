@@ -63,9 +63,6 @@ Permission errors do not stop execution
 Problematic files are skipped and reported
 The application never crashes mid-run
 
-🧩 Current Status
-🚧 In Progress
-
 Planned enhancements:
 Dry-run mode
 Configurable size ranges
