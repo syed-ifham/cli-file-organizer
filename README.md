@@ -66,7 +66,7 @@ The application never crashes mid-run
 
 🧠 Planned enhancements:
 
-Dry-run mode
-Configurable size ranges
-Logging support
-Multithreaded file moves
+Dry-run mode 
+Configurable size ranges 
+Logging support 
+Multithreaded file moves 
