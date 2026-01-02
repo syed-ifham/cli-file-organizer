@@ -58,12 +58,10 @@ Errors             : 12
 Time taken         : 0.74 seconds
 
 ⚠️ Error Handling
+
 Invalid paths are detected early
-
 Permission errors do not stop execution
-
 Problematic files are skipped and reported
-
 The application never crashes mid-run
 
 🧠 Planned enhancements:
